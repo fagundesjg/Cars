@@ -28,6 +28,20 @@ Route::post('/register', 'Auth\RegisterController@register')->name('register');
 Route::post('/logout','Auth\LoginController@logout')->name('logout');
 Route::get('/logout','Auth\LoginController@logout')->name('logout');
 
+Route::middleware(['admin'])->group(function() {
+
 Route::get('/cadastrar-equipe', 'EquipeController@showCreateForm')->name('cadastrar-equipe');
-Route::post('/cadastrar-equipe', 'EquipeController@create')->name('cadastrar-equie');
+Route::post('/cadastrar-equipe', 'EquipeController@create');
+
 Route::post('/cadastrar-membro-equipe','EquipeController@showInsertMemberForm')->name('cadastrar-membro-equipe');
+Route::get('/cadastrar-membro-equipe/{id_equip}','EquipeController@getInsertMemberForm');
+
+Route::put('/cadastrar-membro-equipe','EquipeController@setEquipeValue');
+Route::put('/remover-membro-equipe/{id_equip}/{id_user}', 'EquipeController@unsetEquipeValue');
+
+
+Route::get('/selecionar-equipe','EquipeController@showSelectEquip')->name('selecionar-equipe');
+Route::post('/preencher-resultados-equipe','EquipeController@showInsertResultForm')->name('preencher-resultados-equipe');
+Route::post('/cadastrar-resultado','EquipeController@createResult')->name('cadastrar-resultado');
+
+});

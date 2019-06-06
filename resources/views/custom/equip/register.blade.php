@@ -36,22 +36,23 @@ Cadastrar Equipe
     <div align="center">
         <p>Cadastrar membros da equipe</p>
     </div>
-<form action="{{route('cadastrar-membro-equipe')}}" method="post">
-    @csrf
-        <div class="form-group">
-            <label for="equip" id="equip">Selecione a Equipe</label>
-            <select class="form-control" id="equip" name="equip">
-                @foreach ($equips as $equip)
-                <option value={{$equip->id}}>{{$equip->name}}</option>
-                @endforeach
-            </select>
-        </div>
-        <input
-            type="submit"
-            id="button"
-            value="Prosseguir"
-            class="btn btn-success btn-block"
-        />
-</div>
-</form>
+        <form action={{route('cadastrar-membro-equipe')}} method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="id_equip" id="id_equip">Selecione a Equipe</label>
+                <select class="form-control" id="id_equip" name="id_equip">
+                    @foreach ($equips as $equip)
+                    <option value={{$equip->id}}>{{$equip->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <input
+                type="submit"
+                id="button"
+                value="Prosseguir"
+                class="btn btn-success btn-block"
+            />
+            </div>
+
+        </form>
 @endsection

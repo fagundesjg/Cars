@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/app.css" />
-    <link rel="stylesheet" href="css/custom/home/styles.css" />
+    <link rel="stylesheet" href="/css/app.css" />
+    <link rel="stylesheet" href="/css/custom/home/styles.css" />
     <link href="https://fonts.googleapis.com/css?family=Kanit|Roboto&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/d2e59d1f0d.js"></script>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -17,8 +17,12 @@
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/cadastrar-equipe">Cadastrar Equipe</a></li>
-            <li><a href="/">Inserir Resultado Prova</a></li>
+            @if (Auth::user()->access_level === 'admin')
+                <li><a href={{route('cadastrar-equipe')}}>Cadastrar Equipe</a></li>
+            @endif
+            @if (Auth::user()->access_level === 'admin')
+                <li><a href={{route('selecionar-equipe')}}>Inserir Resultado Prova</a></li>
+            @endif
             <li><a href="/logout" style="position: absolute; right: 5%">Logout</a></li>
         </ul>
     </nav>

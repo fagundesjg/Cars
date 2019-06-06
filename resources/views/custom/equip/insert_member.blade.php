@@ -18,8 +18,15 @@
             <tr>
                 <th scope="row">{{$loop->iteration}}</th>
                 <td>{{$user->name}}</td>
-                <td class="fas fa-trash"></td>
+                <td>
+                    <button class="btn btn-sm fas fa-trash bg-danger" style="color: white" type="submit" form={{"form".$user->id}}>
+                    </button>
+                </td>
             </tr>
+            <form id={{"form".$user->id}} method="POST" action={{"/remover-membro-equipe/".$equip->id."/".$user->id}}>
+            @csrf
+            <input type="hidden" name="_method" value="PUT">
+            </form>
             @endforeach
         </tbody>
         </table>
@@ -27,14 +34,19 @@
 
     <div class="box">
         <p>Adicione novos membros a equipe <strong>{{$equip->name}}</strong></p>
-        <div class="form-group">
-            <label for="user">Selecione um usuário</label>
-            <select name="user" id="user" class="form-control">
+        <form method="POST" action={{route('cadastrar-membro-equipe')}}>
+            @csrf
+            <input type="hidden" name="_method" value="PUT">
+            <input type="hidden" name="id_equip" value={{$equip->id}}>
+            <div class="form-group">
+                <label for="id_user">Selecione um usuário</label>
+                <select name="id_user" id="id_user" class="form-control">
                     @foreach ($users_not_team as $user)
                     <option value={{$user->id}}>{{$user->name}}</option>
                     @endforeach
-            </select>
-        </div>
-        <input type="submit" class="btn btn-success btn-block" value="Adicionar"/>
+                </select>
+            </div>
+            <input type="submit" class="btn btn-success btn-block" value="Adicionar"/>
+        </form>
     </div>
 @endsection

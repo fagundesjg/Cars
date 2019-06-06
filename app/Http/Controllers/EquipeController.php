@@ -27,9 +27,61 @@ class EquipeController extends Controller
     }
 
     public function showInsertMemberForm(Request $request) {
-        $equip = Equip::where('id',$request->equip)->firstOrFail();
-        $users_of_team = User::all()->where('id_equip',$request->equip);
+        $equip = Equip::where('id',$request->id_equip)->firstOrFail();
+        $users_of_team = User::all()->where('id_equip',$request->id_equip);
         $users_not_team = User::all()->where('id_equip','=',0);
-        return view('custom.equip.insert-member', compact(['users_of_team','users_not_team','equip']));
+        return view('custom.equip.insert_member', compact(['users_of_team','users_not_team','equip']));
+    }
+
+    public function getInsertMemberForm($id_equip) {
+        $equip = Equip::where('id',$id_equip)->firstOrFail();
+        $users_of_team = User::all()->where('id_equip',$id_equip);
+        $users_not_team = User::all()->where('id_equip','=',0);
+        return view('custom.equip.insert_member', compact(['users_of_team','users_not_team','equip']));
+    }
+
+    public function setEquipeValue(Request $request)
+    {
+        if(isset($request->id_user) && isset($request->id_equip)){
+        $equip = Equip::find($request->id_equip);
+        $user = User::find($request->id_user);
+
+        $user->id_equip = $equip->id;
+        $user->save();
+        }
+        return redirect('cadastrar-membro-equipe/'. $request->id_equip );
+    }
+
+    public function unsetEquipeValue($id_equip,$id_user)
+    {
+        if(isset($id_user)){
+        $user = User::find($id_user);
+        $user->id_equip = 0;
+        $user->save();
+        }
+        return redirect('cadastrar-membro-equipe/'. $id_equip);
+    }
+
+    public function showSelectEquip()
+    {
+        $equips = Equip::all();
+        return view('custom.equip.select_equip', compact('equips'));
+    }
+
+    public function showInsertResultForm(Request $request)
+    {
+        $equip = Equip::find($request->id_equip);
+        return view('custom.equip.insert_results',compact('equip'));
+    }
+
+    public function createResult(Request $request) {
+        $equip = Equip::find($request->id_equip);
+        $equip->p1_distance = $request->p1_distance;
+        $equip->p2_weight = $request->p2_weight;
+        $equip->p3_speed = $request->p3_speed;
+        $equip->p4_time = $request->p4_time;
+        $equip->p4_penalties = $request->p4_penalties;
+        $equip->save();
+        return redirect('/');
     }
 }
