@@ -119,4 +119,17 @@ class HomeController extends Controller
         $myTeam = Equip::find($user->id_equip);
         return view('custom.home',compact('equips','myTeam'));
     }
+
+    public function removeEquip(Request $request, $equip)
+    {
+        $team = Equip::where('name','=',$equip)->first();
+        $users = User::all()->where('id_equip','=',$team->id);
+        foreach($users as $user)
+        {
+            $user->id_equip = 0;
+            $user->save();
+        }
+        $team->delete();
+        return redirect('/')->with('message','Equipe apagada com sucesso!');
+    }
 }

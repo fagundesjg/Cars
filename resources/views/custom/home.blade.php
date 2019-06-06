@@ -28,16 +28,33 @@
                 <th scope="col">#</th>
                 <th scope="col">Equip</th>
                 <th scope="col">Pts</th>
+                @if (Auth::user()->access_level === 'admin')
+                <th scope="col">Ações</th>
+                @endif
             </thead>
             <tbody>
-            @foreach ($equips as $equip)
+            @foreach ($equips as $equip => $pts)
                 <tr>
                     <th scope="row">{{$loop->iteration}}</th>
-                    <td>{{array_search($equip,$equips)}}</td>
                     <td>{{$equip}}</td>
+                    <td>{{$pts}}</td>
+                    @if (Auth::user()->access_level === 'admin')
+                        <td scope="col">
+                            <button class="btn btn-sm fas fa-trash bg-danger" style="color: white" type="submit" form={{"form-".$equip}}>
+                            </button>
+                        </td>
+                        <form id={{"form-".$equip}} method="POST" action={{"/remover-equipe/".$equip}}>
+                            @csrf
+                        </form>
+                    @endif
                 </tr>
             @endforeach
             </tbody>
         </table>
+        @if(Session::has('message'))
+        <p class="alert alert-info" style="margin-top: 15px">
+            {{ Session::get('message') }}
+        </p>
+        @endif
     </div>
 @endsection

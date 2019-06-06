@@ -43,5 +43,5 @@ Route::put('/remover-membro-equipe/{id_equip}/{id_user}', 'EquipeController@unse
 Route::get('/selecionar-equipe','EquipeController@showSelectEquip')->name('selecionar-equipe');
 Route::post('/preencher-resultados-equipe','EquipeController@showInsertResultForm')->name('preencher-resultados-equipe');
 Route::post('/cadastrar-resultado','EquipeController@createResult')->name('cadastrar-resultado');
-
+Route::post('/remover-equipe/{equip}','HomeController@removeEquip')->name('remover-equipe');
 });

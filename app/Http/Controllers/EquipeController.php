@@ -64,7 +64,7 @@ class EquipeController extends Controller
 
     public function showSelectEquip()
     {
-        $equips = Equip::all();
+        $equips = Equip::orderBy('name','asc')->get();
         return view('custom.equip.select_equip', compact('equips'));
     }
 
