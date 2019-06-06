@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Equip;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -114,6 +115,8 @@ class HomeController extends Controller
     public function index()
     {
         $equips = $this->sortEquips();
-        return view('custom.home',compact('equips'));
+        $user = User::find(Auth::id());
+        $myTeam = Equip::find($user->id_equip);
+        return view('custom.home',compact('equips','myTeam'));
     }
 }
