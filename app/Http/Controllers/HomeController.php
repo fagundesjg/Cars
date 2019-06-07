@@ -27,7 +27,7 @@ class HomeController extends Controller
         $speeds = DB::table('equips')->select('id','name','p3_speed')->orderBy('p3_speed', 'desc')->get();
         $times = DB::table('equips')->select('id','name','p4_time','p4_penalties')->get();
 
-        // calcula a pontuação do tempo
+        // calcula a pontuação do tempo com as penalidades
         foreach($times as $time)
         {
             $time->p4_time = $time->p4_time + $time->p4_penalties;
@@ -52,56 +52,64 @@ class HomeController extends Controller
             $equips[$time->name] = 0;
         }
 
-        $pts = 5;
+        $pts = count($times);
         $last_value = 0;
+        $i = 0;
         foreach($times as $time)
         {
-            $equips[$time->name] += $pts;
-            if($last_value !== $time->p4_time);
+            if( ($last_value != $time->p4_time) && ($i > 0) )
             {
                 $pts--;
             }
+            $equips[$time->name] += $pts;
             $last_value = $time->p4_time;
+            $i++;
         }
-
         // calcula a pontuação das distancias
-        $pts = 5;
+        $pts = count($distances);
         $last_value = 0;
+        $i = 0;
         foreach($distances as $distance)
         {
-            $equips[$distance->name] += $pts;
-            if($last_value !== $distance->p1_distance)
+            if($last_value !== $distance->p1_distance  && $i > 0)
             {
                 $pts--;
             }
+            $equips[$distance->name] += $pts;
             $last_value = $distance->p1_distance;
+            $i++;
         }
 
         // calcula a pontuação dos pesos
-        $pts = 5;
+        $pts = count($weights);
         $last_value = 0;
+        $i = 0;
         foreach($weights as $weight)
         {
-            $equips[$weight->name] += $pts;
-            if($last_value !== $weight->p2_weight)
+            if($last_value !== $weight->p2_weight  && $i > 0)
             {
                 $pts--;
             }
+            $equips[$weight->name] += $pts;
             $last_value = $weight->p2_weight;
+            $i++;
         }
 
         // calcula a pontuação das velocidades
-        $pts = 5;
+        $pts = count($speeds);
         $last_value = 0;
+        $i = 0;
         foreach($speeds as $speed)
         {
-            $equips[$speed->name] += $pts;
-            if($last_value !== $speed->p3_speed)
+            if($last_value !== $speed->p3_speed && $i > 0)
             {
                 $pts--;
             }
+            $equips[$speed->name] += $pts;
             $last_value = $speed->p3_speed;
+            $i++;
         }
+
         asort($equips); // ordena o array em ordem crescente
         $equips = array_reverse($equips, true); // inverte o array mantendo as keys
         return $equips;
@@ -122,6 +130,7 @@ class HomeController extends Controller
 
     public function removeEquip(Request $request, $equip)
     {
+        $equip = str_replace('-',' ',$equip);
         $team = Equip::where('name','=',$equip)->first();
         $users = User::all()->where('id_equip','=',$team->id);
         foreach($users as $user)

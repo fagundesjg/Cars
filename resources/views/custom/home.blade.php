@@ -40,10 +40,10 @@
                     <td>{{$pts}}</td>
                     @if (Auth::user()->access_level === 'admin')
                         <td scope="col">
-                            <button class="btn btn-sm fas fa-trash bg-danger" style="color: white" type="submit" form={{"form-".$equip}}>
+                            <button class="btn btn-sm fas fa-trash bg-danger" style="color: white" type="submit" form={{"form-".str_replace(' ','-',$equip)}}>
                             </button>
                         </td>
-                        <form id={{"form-".$equip}} method="POST" action={{"/remover-equipe/".$equip}}>
+                        <form id={{"form-".str_replace(' ','-',$equip)}} method="POST" action={{"/remover-equipe/".str_replace(' ','-',$equip)}}>
                             @csrf
                         </form>
                     @endif
